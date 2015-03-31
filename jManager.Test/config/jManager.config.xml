@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<config>
+   <hibernate>
+       <driver>org.postgresql.Driver</driver>
+       <url>jdbc:postgresql://127.0.0.1:5432/testdb</url>
+       <username>postgres</username>
+       <password>M00nlight!</password>
+       <showsql>true</showsql>
+       <dialect>org.hibernate.dialect.PostgreSQLDialect</dialect>
+       <auto>update</auto>
+       <provider>org.hibernate.cache.NoCacheProvider</provider>
+       <session>thread</session>
+   </hibernate>
+</config>
