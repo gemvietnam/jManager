@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Properties;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
@@ -23,7 +25,7 @@ import org.w3c.dom.NodeList;
 public class ApplicationConstants {
 
     public static enum DatabaseConfig {
-        
+
         Config("config"),
         Driver("driver"),
         URL("url"),
@@ -45,8 +47,8 @@ public class ApplicationConstants {
             return this.enumValue;
         }
 
-        public String GetValue() {
-            String result = "";
+        public DefaultConfig GetValue() {
+            DefaultConfig defaultConfig = new DefaultConfig();
 
             try {
                 //ClassLoader classLoader = ApplicationConstants.class.getClassLoader();
@@ -54,20 +56,22 @@ public class ApplicationConstants {
 
                 File file = new File(GetConfigFilePath());
 
-                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(file);
-
-                doc.getDocumentElement().normalize();
-
+//                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+//                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+//                Document doc = dBuilder.parse(file);
+//                doc.getDocumentElement().normalize();
                 System.out.println("Element :" + this.enumValue);
 
-                result = doc.getElementsByTagName(this.enumValue).item(0).getTextContent();
+//                result = doc.getElementsByTagName(this.enumValue).item(0).getTextContent();
+                JAXBContext jaxbContext = JAXBContext.newInstance(DefaultConfig.class);
+                Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+                defaultConfig = (DefaultConfig) unmarshaller.unmarshal(file);
+
             } catch (Exception e) {
                 Logs.Record(e);
             }
 
-            return result;
+            return defaultConfig;
         }
     }
 
