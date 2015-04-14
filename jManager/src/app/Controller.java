@@ -11,6 +11,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import utils.common.ApplicationConstants;
@@ -28,12 +29,12 @@ public class Controller extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("AddressApp");
+        this.primaryStage.setTitle("jManager");
 
         if (this.CheckConnectionConfig() == false) {
             this.InitConnectionConfig();
         }
-        
+
         this.initRootLayout();
     }
 
@@ -54,11 +55,23 @@ public class Controller extends Application {
     }
 
     private void InitConnectionConfig() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Controller.class.getResource("view/PersonOverview.fxml"));
+            AnchorPane personOverview = (AnchorPane) loader.load();
+
+            // Set person overview into the center of root layout.
+            rootLayout.setCenter(personOverview);
+
+            RootLayoutController rootController = loader.getController();
+            rootController.setMainApp(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initRootLayout() {
-         try {
+        try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Controller.class.getResource("view/RootLayout.fxml"));
